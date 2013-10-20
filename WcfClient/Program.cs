@@ -27,25 +27,26 @@ namespace WcfClient
                     .GetSummary(OutcomeFilter);
             Console.WriteLine(wcfTestAuthenticateUserSummary);
 
-            //var wcfTestGetAllOrdersSummary =
-            //        testGroup
-            //            .Plan("TestGetAllOrders", () => TestGetAllOrders(), 10)
-            //            .GetResult()
-            //            .GetSummary(OutcomeFilter);
-            //Console.WriteLine(wcfTestGetAllOrdersSummary);   
+            var wcfTestGetAllOrdersSummary =
+                    testGroup
+                        .Plan("TestGetAllOrders", () => TestGetAllOrders(), 10)
+                        .GetResult()
+                        .GetSummary(OutcomeFilter);
+            Console.WriteLine(wcfTestGetAllOrdersSummary);   
             Console.Read();
 
         }
 
         private static void TestAuthenticateUser()
         {
-            string address = "net.tcp://localhost:50001/SecurityService";
-            var binding = new NetTcpBinding() { MaxBufferPoolSize = 524288, MaxReceivedMessageSize = 6553600, MaxBufferSize = 6553600 };
-            ChannelFactory<ISimpleContract> factory = new ChannelFactory<ISimpleContract>(binding);
-            var endPoint = new EndpointAddress(address);
-            factory.Endpoint.Behaviors.Add(new ProtoEndpointBehavior());
-
-            ISimpleContract proxy = factory.CreateChannel(endPoint);
+            //string address = "net.tcp://localhost:50001/SecurityService";
+            //var binding = new NetTcpBinding() { MaxBufferPoolSize = 524288, MaxReceivedMessageSize = 6553600, MaxBufferSize = 6553600 };
+            //binding.Security.Mode = SecurityMode.None;
+            //ChannelFactory<ISimpleContract> factory = new ChannelFactory<ISimpleContract>(binding);
+            //var endPoint = new EndpointAddress(address);
+            //factory.Endpoint.Behaviors.Add(new ProtoEndpointBehavior());
+            ChannelFactory<ISimpleContract> factory = new ChannelFactory<ISimpleContract>("SecurityService");
+            ISimpleContract proxy = factory.CreateChannel();
 
             AuthenticateUserRequest request = new AuthenticateUserRequest()
             {
@@ -58,13 +59,13 @@ namespace WcfClient
 
         private static void TestGetAllOrders()
         {
-            string address = "net.tcp://localhost:50001/OrderService";
-            var binding = new NetTcpBinding() { MaxBufferPoolSize = 524288, MaxReceivedMessageSize = 6553600, MaxBufferSize = 6553600 };
-            ChannelFactory<IOrderService> factory = new ChannelFactory<IOrderService>(binding);
-            var endPoint = new EndpointAddress(address);
-            factory.Endpoint.Behaviors.Add(new ProtoEndpointBehavior());
+            //string address = "net.tcp://localhost:50001/OrderService";
+            //var binding = new NetTcpBinding() { MaxBufferPoolSize = 524288, MaxReceivedMessageSize = 6553600, MaxBufferSize = 6553600 };
+            ChannelFactory<IOrderService> factory = new ChannelFactory<IOrderService>("OrderService");
+            //var endPoint = new EndpointAddress(address);
+            //factory.Endpoint.Behaviors.Add(new ProtoEndpointBehavior());
 
-            IOrderService proxy = factory.CreateChannel(endPoint);
+            IOrderService proxy = factory.CreateChannel();
 
             var reponse = proxy.GetAllOrders(1000);
             factory.Close();

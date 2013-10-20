@@ -1,8 +1,11 @@
-﻿using System;
+﻿using ProtoBuf.ServiceModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.ServiceModel.Description;
 using System.Text;
+using WcfServiceContract;
 
 namespace WCFServiceHost
 {
@@ -11,6 +14,12 @@ namespace WCFServiceHost
         static void Main(string[] args)
         {
             ServiceHost host = new ServiceHost(typeof(SecurityService));
+            string address = "net.tcp://localhost:50001/SecurityService";
+            var binding = new NetTcpBinding() { MaxBufferPoolSize = 524288, MaxReceivedMessageSize = 6553600, MaxBufferSize = 6553600 };
+            //binding.Security.Mode = SecurityMode.None;
+            ServiceEndpoint endpoint = host.AddServiceEndpoint(
+    typeof(ISimpleContract), binding, address);
+            endpoint.Behaviors.Add(new ProtoEndpointBehavior());
             host.Opened += host_Opened;
             host.Open();
             ServiceHost host1 = new ServiceHost(typeof(OrderService));
