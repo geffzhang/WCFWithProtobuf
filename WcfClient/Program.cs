@@ -4,10 +4,7 @@ using SimpleSpeedTester.Core;
 using SimpleSpeedTester.Core.OutcomeFilters;
 using SimpleSpeedTester.Interfaces;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.ServiceModel;
-using System.Text;
 using WcfServiceContract;
 
 namespace WcfClient
@@ -42,12 +39,12 @@ namespace WcfClient
             //string address = "net.tcp://localhost:50001/SecurityService";
             //var binding = new NetTcpBinding() { MaxBufferPoolSize = 524288, MaxReceivedMessageSize = 6553600, MaxBufferSize = 6553600 };
             //binding.Security.Mode = SecurityMode.None;
-            //ChannelFactory<ISimpleContract> factory = new ChannelFactory<ISimpleContract>(binding);
             //var endPoint = new EndpointAddress(address);
+            //ChannelFactory<ISimpleContract> factory = new ChannelFactory<ISimpleContract>(binding, endPoint);         
             //factory.Endpoint.Behaviors.Add(new ProtoEndpointBehavior());
+
             ChannelFactory<ISimpleContract> factory = new ChannelFactory<ISimpleContract>("SecurityService");
             ISimpleContract proxy = factory.CreateChannel();
-
             AuthenticateUserRequest request = new AuthenticateUserRequest()
             {
                 UserID = 1,
@@ -59,14 +56,14 @@ namespace WcfClient
 
         private static void TestGetAllOrders()
         {
-            //string address = "net.tcp://localhost:50001/OrderService";
+            //string address = "net.tcp://localhost:50002/OrderService";
             //var binding = new NetTcpBinding() { MaxBufferPoolSize = 524288, MaxReceivedMessageSize = 6553600, MaxBufferSize = 6553600 };
-            ChannelFactory<IOrderService> factory = new ChannelFactory<IOrderService>("OrderService");
             //var endPoint = new EndpointAddress(address);
+            //ChannelFactory<IOrderService> factory = new ChannelFactory<IOrderService>(binding,endPoint);
             //factory.Endpoint.Behaviors.Add(new ProtoEndpointBehavior());
 
+            ChannelFactory<IOrderService> factory = new ChannelFactory<IOrderService>("OrderService");
             IOrderService proxy = factory.CreateChannel();
-
             var reponse = proxy.GetAllOrders(1000);
             factory.Close();
         }
