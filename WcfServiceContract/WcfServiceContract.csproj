@@ -12,11 +12,9 @@
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Microsoft.CSharp" Version="4.*" />
+    <PackageReference Include="protobuf-net" Version="2.4.0" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="System.ServiceModel" />
-  </ItemGroup>
-  <ItemGroup>
-    <PackageReference Include="protobuf-net" Version="2.4.0" />
   </ItemGroup>
 </Project>
